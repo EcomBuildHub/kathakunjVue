@@ -6,14 +6,25 @@
       </div>
       <div class="right-navbar">
         <span v-if="authenticatedUser">
-           <button type="submit" class="create-btn">Write your Blog</button>
+           <RouterLink to="/blog" class="create-btn">Write your Blog</RouterLink>
         </span>
         <span v-else>
             <button class="create-btn" @click="googleLogin">Create Blog</button>
         </span>
-        <span v-if="authenticatedUser">
-            <img :src=" $session.get('avatar') " alt="Logo" class="logo" />
-        </span>
+        <nav role="navigation">
+        <ul>
+            <li>
+              <span v-if="authenticatedUser">
+                <img :src=" $session.get('avatar') " alt="Logo" class="logo" />
+              </span>
+              <ul class="dropdown">
+                <li><RouterLink to="/profile">Profile</RouterLink></li>
+                <li><RouterLink to="/story">Story</RouterLink></li>
+                <li><a href="#">Setting</a></li>
+              </ul>
+            </li>
+          </ul>
+       </nav>
       </div>
     </div>
 </template>
@@ -84,11 +95,68 @@
     object-fit: cover;
     border: 2px solid #ccc;
   }
+
+  a {
+  text-decoration: none;
+}
+
+nav {
+	font-family: monospace;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+li {
+	color: #fff;
+	display: block;
+	float: left;
+	padding: 1rem;
+	position: relative;
+	text-decoration: none;
+  transition-duration: 0.5s;
+}
+
+li a {
+  color: #fff;
+}
+
+li:hover {
+	cursor: pointer;
+}
+
+ul li ul {
+	background: rgb(193, 190, 190);
+	visibility: hidden;
+  opacity: 0;
+  min-width: 5rem;
+	position: absolute;
+  transition: all 0.5s ease;
+  margin-top: 1rem;
+	left: 0;
+  display: none;
+}
+
+ul li:hover > ul,
+ul li ul:hover {
+  visibility: visible;
+  opacity: 1;
+  display: block;
+}
+
+ul li ul li {
+	clear: both;
+  width: 100%;
+}
 </style>
 <script setup>
     import { getCurrentInstance } from 'vue';
     const currentInstance = getCurrentInstance();
     const $session = currentInstance.appContext.config.globalProperties.$session;
+    console.log($session.get('name'), $session.get('token'), $session.get('avatar'));
     const token = $session.get('token');
     const authenticatedUser = token ?  true : false;
 

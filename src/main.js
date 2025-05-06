@@ -3,12 +3,12 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
+import { Notifications } from '@kyvg/vue3-notification'
 
 const app = createApp(App)
 
 app.use(router)
-
-axios.defaults.baseURL = "http://127.0.0.1:9090/api";
+app.use(Notifications)
 
 app.config.globalProperties.$session = {
     set(key, value)
@@ -34,7 +34,19 @@ app.config.globalProperties.$session = {
     }
 }
 
-router.afterEach((to, from, next) => {
-    // if()
-});
+const token = app.config.globalProperties.$session.get('token') != undefined ? app.config.globalProperties.$session.get('token') : null;
+axios.defaults.baseURL = "http://127.0.0.1:9090/api";
+axios.defaults.headers.common['Authorization'] = token;
+
+router.beforeEach((to, from, next) => {
+    if(to.meta && to.meta.requireAuth) {
+        if(token) {
+            next();
+        }else {
+            next('/')
+        }
+    }else {
+        next();
+    }
+})
 app.mount('#app')
