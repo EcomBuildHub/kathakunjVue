@@ -5,7 +5,6 @@
 <script setup>
 import { onMounted, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
-import { useNotification } from "@kyvg/vue3-notification";
 
 const router = useRouter();
 const currentInstance = getCurrentInstance();
