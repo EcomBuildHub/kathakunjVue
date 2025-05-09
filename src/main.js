@@ -7,7 +7,7 @@ import axios from 'axios'
 const app = createApp(App)
 
 app.use(router)
-app.use(Notifications)
+// app.use(Notifications)
 
 app.config.globalProperties.$session = {
     set(key, value)

@@ -2,7 +2,7 @@
     <NavBarView></NavBarView>
     <div class="blogPage">
         <div class="right-body">
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veniam, fugit? Quaerat optio delectus ab eligendi consequuntur exercitationem maiores repellendus illo deserunt libero reprehenderit, minus rerum itaque! Culpa quia accusamus similique?</p>
+            <BlogCard :options="blogs"></BlogCard>
         </div>
         <div class="left-body">
             <p>Right side of the body</p>
@@ -11,6 +11,25 @@
 </template>
 <script setup>
 import NavBarView from '../components/NavBarView.vue';
+import BlogCard from '@/components/BlogCard.vue';
+import { ref,onMounted } from 'vue';
+import axios from 'axios';
+const blogs = ref([]);
+onMounted(() => {
+    axios.get('/blogs/list', {
+        params: {
+            context: "dashboard"
+        }
+    })
+    .then(function(response) {
+        blogs.value = response.data.result;
+    }).catch(function(response) {
+        console.log(response.data);
+    });
+})
+
+console.log('dashboard', 'nepal');
+// console.log(blogs);
 </script>
 <style scoped>
 .blogPage {
