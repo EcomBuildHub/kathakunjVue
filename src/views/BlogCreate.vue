@@ -306,7 +306,6 @@ const createBlog = () => {
     status: formData.value.status == true ? "1" : "0",
   }
 
-  console.log(data, 'data');
   axios.post('/blogs', data, {
     headers: {
       "Content-Type": "multipart/form-data",

@@ -3,9 +3,9 @@
     <div class="myStory">
         <!-- First Row -->
             <div class="left">
-              <SearchField></SearchField>
+              <SearchField @updateBlogs="updateBlogs"></SearchField>
               <div class="blogCard">
-                <BlogCard :options="blogs" :displayImage="true"></BlogCard>
+                <BlogCard :options="blogs" :displayImage="false" :displayAuthor="false"></BlogCard>
               </div>
             </div>
             <div class="right">
@@ -19,9 +19,25 @@
 import NavBarView from '@/components/NavBarView.vue';
 import SearchField from '@/components/SearchField.vue';
 import BlogCard from '@/components/BlogCard.vue';
-import { blogs } from '@/components/constant';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
 
+const blogs = ref([]);
+
+onMounted(() => {
+  axios.get('/blogs/list')
+  .then(function(response) {
+    blogs.value = response.data.result;
+  }).catch(function(response) {
+    console.log(response.data);
+  });
+});
+
+const updateBlogs = (newBlogs) => {
+  blogs.value = newBlogs;
+}
 </script>
+
 <style scoped>
 .myStory {
     display: flex;

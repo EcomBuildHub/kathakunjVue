@@ -1,5 +1,5 @@
 <template>
-    <div class="blog-card" v-for="blog in blogs" :key="blog.id">
+    <div class="blog-card"  v-for="blog in options" :key="blog.id">
       <div class="card-content">
         <div class="text-content">
           <h3 class="title">{{ blog.title }}</h3>
@@ -11,9 +11,9 @@
       </div>
       <div class="blog-info">
         <div class="blog-info-left">
-            <p><span class="label">Author:</span> {{ blog.authorName }}</p>
+            <p v-if="displayAuthor"><span class="label">Author:</span> {{ blog.createdBy }}</p>
             <p v-if="blog.publishedAt"><span class="label">Published At:</span> {{ blog.publishedAt }}</p>
-            <p v-if="blog.scheduleAt"><span class="label">Schedule:</span> {{ blog.scheduleAt }}</p>
+            <p v-if="blog.scheduledAt"><span class="label">Release Date:</span> {{ blog.scheduledAt }}</p>
         </div>
         <div class="blog-info-right">
             <p><span class="label">Views:</span> {{ blog.totalView }}</p>
@@ -24,18 +24,22 @@
 </template>
 <script setup>
 import { getCurrentInstance } from 'vue';
-import { blogs } from './constant';
 const currentInstance = getCurrentInstance();
 const $session = currentInstance.appContext.config.globalProperties.$session;
-defineProps({
-    blogs: {
-        type: Array,
-        default: []
-    },
-    displayImage: {
-        type: Boolean,
-    }
-})
+const props = defineProps({
+  displayImage: {
+    type: Boolean,
+    default: true,
+  },
+  displayAuthor: {
+    type: Boolean,
+    default: true
+  },
+  options: {
+    type: Array,
+    default: () => [],
+  },
+});
 
  const trimData = (data, trimLength) => {
     if(data) {
