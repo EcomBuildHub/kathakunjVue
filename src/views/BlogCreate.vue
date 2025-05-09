@@ -249,6 +249,7 @@ import InputField from '@/components/InputField.vue';
 import SelectField from '@/components/SelectField.vue';
 import { blogType } from '@/components/constant';
 import { ref } from 'vue';
+import axios from 'axios';
 
 const formData = ref({
   title: '',
@@ -260,7 +261,6 @@ const formData = ref({
   logo: '',
   coverImage: '',
   description: '',
-  parentId: 0,
 });
 
 
@@ -281,7 +281,6 @@ const handleLogoUpload = (event) => {
 const handleCoverImage = (event) => {
 
   const handleCoverImage = event.target.files[0];
-  console.log(event.target.files[0], handleCoverImage);
   if(handleCoverImage)
   {
     formData.value.coverImage = handleCoverImage;
@@ -293,8 +292,30 @@ const handleCoverImage = (event) => {
   }
 }
 
-
+// console.log(formData.value);
 const createBlog = () => {
-  console.log(formData.value);
+  const data = {
+    title: formData.value.title,
+    subTitle: formData.value.subTitle,
+    description: formData.value.description,
+    isPublished: formData.value.isPublished == true ? "1" : "0",
+    scheduleDate: formData.value.scheduleDate,
+    type:formData.value.type,
+    coverImage: formData.value.coverImage,
+    logo: formData.value.logo,
+    status: formData.value.status == true ? "1" : "0",
+  }
+
+  console.log(data, 'data');
+  axios.post('/blogs', data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    }
+  })
+  .then(function(response) {
+    console.log(response.data);
+  }).catch(function(error) {
+    console.log(error);
+  });
 };
 </script>
