@@ -1,7 +1,6 @@
 <template>
     <NavBarView></NavBarView>
     <div class="myStory">
-        <!-- First Row -->
             <div class="left">
               <SearchField @updateBlogs="updateBlogs"></SearchField>
               <div class="blogCard">

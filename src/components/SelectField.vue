@@ -21,6 +21,10 @@
     modelValue: { type: [String, Number], default: "" },
     placeholder: { type: String, default: "Select an option" },
     label: { type: String, default: "" },
+    multiples: {
+      type: Boolean,
+      default: false
+    },
     options: {
       type: Array,
       required: true,
