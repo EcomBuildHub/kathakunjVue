@@ -37,11 +37,12 @@ console.log('dashboard', 'nepal');
    gap: 4;
    justify-content: space-between;
    border: 2px;
-   border-color: rgb(202, 43, 18);
+   /* border-color: rgb(202, 43, 18); */
 }
 
 .right-body {
     width: 80%;
+    padding: 20PX;
     background-color: blanchedalmond;
 }
 

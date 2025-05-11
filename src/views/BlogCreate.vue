@@ -1,6 +1,6 @@
 <template>
   <NavBarView />
-  <div class="container">
+  <div class="container bg-red-500">
     <div class="main-content">
       <div class="input-row">
         <InputField
@@ -88,6 +88,13 @@
           Active
         </label>
       </div>
+       <SelectField
+          id="categories"
+          :options="categories"
+          placeholder="Select Categories"
+          v-model="formData.categories"
+          label="Categories"
+        />
     </div>
   </div>
 </template>
@@ -248,9 +255,10 @@ import NavBarView from '@/components/NavBarView.vue';
 import InputField from '@/components/InputField.vue';
 import SelectField from '@/components/SelectField.vue';
 import { blogType } from '@/components/constant';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const formData = ref({
   title: '',
   isPublished: true,
@@ -259,9 +267,11 @@ const formData = ref({
   subTitle: '',
   scheduleDate: '',
   logo: '',
+  categories: [],
   coverImage: '',
   description: '',
 });
+
 
 
 const handleLogoUpload = (event) => {
@@ -304,17 +314,37 @@ const createBlog = () => {
     coverImage: formData.value.coverImage,
     logo: formData.value.logo,
     status: formData.value.status == true ? "1" : "0",
+    categories: formData.value.categories
   }
-
+  console.log(data, 'data');
   axios.post('/blogs', data, {
     headers: {
       "Content-Type": "multipart/form-data",
     }
   })
   .then(function(response) {
+    if(response.status =="200") {
+      router.push(`/blog-details/${response.data.result.id}`);
+    }
     console.log(response.data);
   }).catch(function(error) {
     console.log(error);
   });
-};
+}
+const categories = ref([]);
+
+onMounted(() => {
+  axios.get('/app/category')
+  .then(function(response) {
+    if(response.status == "200") {
+      categories.value = response.data.result.map(cat => ({
+        label : cat.name,
+        value: cat.id
+      }))
+      console.log(categories.value, 'categories values');
+    }
+  }).catch(function(error) {
+    console.log(error);
+  })
+})
 </script>

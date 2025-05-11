@@ -35,7 +35,7 @@ onMounted(() => {
         //     type: "success",
         // });
 
-        router.push('/dashboard');
+        router.push('/dashboard?context="dashboard"');
 
     }else {
         router.push('/');

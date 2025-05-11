@@ -3,7 +3,7 @@
       <div class="card-content">
         <div class="text-content">
           <h3 class="title">{{ blog.title }}</h3>
-          <p class="description">{{ trimData(blog.description, 350) }}</p>
+          <p class="description">{{ trimData(blog.description, 350)}} <RouterLink :to="`/blog-details/${blog.id}`">View More</RouterLink></p>
         </div>
         <div class="avatar-wrapper" v-if="displayImage">
           <img :src="$session.get('avatar')" alt="Avatar" class="avatar"/>
