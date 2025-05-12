@@ -4,8 +4,8 @@
         <div class="right-body">
             <BlogCard :options="blogs"></BlogCard>
         </div>
-        <div class="left-body">
-            <p>Right side of the body</p>
+        <div class="bg-red-500">
+            <p>Right side of the bodys</p>
         </div>
     </div>
 </template>

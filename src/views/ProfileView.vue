@@ -1,55 +1,65 @@
 <template>
     <NavBarView />
-    <div class="form-container">
-        <div class="profile-details">
-            <div class="avatar">
-                <img :src="$session.get('avatar')" alt="Avatar" class="avatar-image" />
-            </div>
-            <div class="form-fields">
-                <div class="flex">
-                    <Input type="text" id="name" placeholder="Enter name" v-model="formData.name" readonly/>
-                    <Input type="text" id="email" placeholder="Enter email" v-model="formData.email" readonly/>
-                </div>
-                <div class="flex">
-                    <Input type="text" id="phone" placeholder="Enter phone number" v-model="formData.phone" required />
-                    <Input type="text" id="profession" placeholder="Enter profession" v-model="formData.profession" required />
-                </div>
-                <div class="flex">
-                    <SelectField :options="gender" :id="gender" v-model="formData.gender" placeholder="Select Gender" aria-required="true"></SelectField>
-                    <Input type="date" id="dob" placeholder="Enter Date of Birth" v-model="formData.dob" required />
-                </div>
-                <div class="flex-social">
-                    <Input type="text" id="facebookSocialLinks"
-                        placeholder="Facebook social link"
-                        v-model="formData.socialLinks.facebook"/>
-                    <Input type="text" id="LinkedInSocialLinks" placeholder="LinkedIn social link" v-model="formData.socialLinks.linkedIn"/>
-                    <Input type="text" id="InstagramSocialLinks" placeholder="Instagram social link" v-model="formData.socialLinks.instagram" />
-                    <Input type="text" id="ThreadSocialLinks" placeholder="Thread social link" v-model="formData.socialLinks.thread"/>
-
-                    <!-- <Input type="text" id="InstagramInSocialLinks" placeholder="Enter Instagram social links" v-model="formData.socialLinks.linkedIn" /> -->
-                    <!--
-
-                    <Input type="text" id="ThreadInSocialLinks" placeholder="Enter Thread Social links" v-model="formData.socialLinks?.thread" /> -->
-                </div>
-                <div class="bio-section">
-                    <textarea v-model="formData.bio" placeholder="Write your bio here..." required></textarea>
-                </div>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 p-10 bg-gray-100 min-h-screen font-poppins">
+      <div class="md:col-span-2 bg-white rounded-2xl p-8 shadow">
+        <div class="flex justify-center mb-6">
+          <img :src="$session.get('avatar')" alt="Avatar" class="w-28 h-28 rounded-full border-4 border-gray-300 object-cover" />
         </div>
-
-        <div class="right-side">
-            <div class="address-fields">
+  
+        <div class="grid gap-6">
+          <div class="grid md:grid-cols-2 gap-4">
+            <Input type="text" id="name" placeholder="Enter name" v-model="formData.name" readonly />
+            <Input type="text" id="email" placeholder="Enter email" v-model="formData.email" readonly />
+          </div>
+  
+          <div class="grid md:grid-cols-2 gap-4">
+            <Input type="text" id="phone" placeholder="Enter phone number" v-model="formData.phone" required />
+            <Input type="text" id="profession" placeholder="Enter profession" v-model="formData.profession" required />
+          </div>
+  
+          <div class="grid md:grid-cols-2 gap-4">
+            <SelectField :options="gender" :id="gender" v-model="formData.gender" placeholder="Select Gender" aria-required="true" />
+            <Input type="date" id="dob" placeholder="Enter Date of Birth" v-model="formData.dob" required />
+          </div>
+  
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 bg-slate-100 p-4 rounded-xl">
+            <Input type="text" id="facebookSocialLinks" placeholder="Facebook link" v-model="formData.socialLinks.facebook" />
+            <Input type="text" id="LinkedInSocialLinks" placeholder="LinkedIn link" v-model="formData.socialLinks.linkedIn" />
+            <Input type="text" id="InstagramSocialLinks" placeholder="Instagram link" v-model="formData.socialLinks.instagram" />
+            <Input type="text" id="ThreadSocialLinks" placeholder="Thread link" v-model="formData.socialLinks.thread" />
+          </div>
+  
+          <div>
+            <textarea v-model="formData.bio"
+                      placeholder="Write your bio here..."
+                      required
+                      class="w-full p-3 border border-slate-300 rounded-xl bg-slate-50 text-base resize-y min-h-[100px] focus:outline-none focus:border-indigo-600 focus:bg-white transition-all"></textarea>
+          </div>
+        </div>
+      </div>
+  
+        <div class="bg-white rounded-2xl p-8 shadow">
+            <!-- Row 1 -->
+            <div class="p-4 rounded grid grid-rows-2 gap-4">
                 <Input type="text" v-model="formData.country" placeholder="Enter Country" />
-                <Input type="text" v-model="formData.state" placeholder="Enter State" />
-                <Input type="text" v-model="formData.city" placeholder="Enter City" />
-                <Input type="text" v-model="formData.location" placeholder="Enter Address (Street, etc.)" />
+                    <Input type="text" v-model="formData.state" placeholder="Enter State" />
+                    <Input type="text" v-model="formData.city" placeholder="Enter City" />
+                    <Input type="text" v-model="formData.location" placeholder="Enter Address (Street, etc.)" />
             </div>
-            <div class="flex-button">
-                <button @click="updateProfile">Update Profile</button>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="w-1/4"></div>
+                <div class="flex justify-center w-auto">
+                    <button @click="updateProfile"
+                        class="bg-indigo-600 text-white px-6 py-3 text-base rounded-xl hover:bg-indigo-700 transition-all">
+                        Update 
+                    </button>
+                </div>
+                <div class="w-1/4"></div>
             </div>
         </div>
     </div>
 </template>
+
 
 <style scoped>
 /* Global container */
