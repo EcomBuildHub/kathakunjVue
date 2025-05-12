@@ -4,7 +4,8 @@ import { RouterView } from 'vue-router'
 
 <template>
  <RouterView />
- <notifications />
+ <notifications width="400"/>
+
 </template>
 
 <style scoped></style>

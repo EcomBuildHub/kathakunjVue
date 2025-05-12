@@ -6,7 +6,7 @@
       </div>
       <div class="right-navbar">
         <span v-if="authenticatedUser">
-           <RouterLink to="/blog" class="create-btn">Write your Blog</RouterLink>
+           <RouterLink to="/blog" class="bg-blue-600 px-3 py-3 rounded-lg text-white">Write your Blog</RouterLink>
         </span>
         <span v-else>
             <button class="create-btn" @click="googleLogin">Create Blog</button>

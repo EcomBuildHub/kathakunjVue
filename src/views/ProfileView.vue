@@ -2,10 +2,13 @@
     <NavBarView />
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10 p-10 bg-gray-100 min-h-screen font-poppins">
       <div class="md:col-span-2 bg-white rounded-2xl p-8 shadow">
-        <div class="flex justify-center mb-6">
-          <img :src="$session.get('avatar')" alt="Avatar" class="w-28 h-28 rounded-full border-4 border-gray-300 object-cover" />
+        <div class="mb-6 grid grid-cols-3 items-center">
+            <div></div>
+            <div class="flex justify-center items-center">
+                <img :src="$session.get('avatar')" alt="Avatar" class="w-28 h-28 rounded-full border-4 border-gray-300 object-cover" />
+            </div>
+            <div></div>
         </div>
-  
         <div class="grid gap-6">
           <div class="grid md:grid-cols-2 gap-4">
             <Input type="text" id="name" placeholder="Enter name" v-model="formData.name" readonly />
@@ -49,10 +52,10 @@
             <div class="grid grid-cols-3 gap-4">
                 <div class="w-1/4"></div>
                 <div class="flex justify-center w-auto">
-                    <button @click="updateProfile"
-                        class="bg-indigo-600 text-white px-6 py-3 text-base rounded-xl hover:bg-indigo-700 transition-all">
-                        Update 
-                    </button>
+                    <a @click="updateProfile"
+                        class="bg-blue-600 text-white px-6 py-3 text-base rounded-xl transition-all cursor-pointer">
+                        Update
+                    </a>
                 </div>
                 <div class="w-1/4"></div>
             </div>
@@ -194,10 +197,12 @@ button:active {
 import { ref, onMounted } from 'vue';
 import NavBarView from '@/components/NavBarView.vue';
 import { getCurrentInstance } from 'vue';
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 import Input from '@/components/InputField.vue'
 import SelectField from '@/components/SelectField.vue';
 import { gender } from '@/components/constant';
+import { useNotification } from "@kyvg/vue3-notification";
+    const notification = useNotification()
     const currentInstance = getCurrentInstance();
     const $session = currentInstance.appContext.config.globalProperties.$session;
     const formData = ref({
@@ -227,11 +232,20 @@ import { gender } from '@/components/constant';
             if(response.data.status == "success")
             {
                 const member = memberDetails();
+                notification.notify({
+                    title: "Profile updated",
+                    text: response.data.message,
+                    type: 'success'
+                });
             }
         }).catch(error => {
-            console.log(error);
+            notification.notify({
+                    title: "Profile updated Fail",
+                    text: error.response.data.message,
+                    type: 'warn'
+            });
         }).finally({
-        }) ;
+        });
     }
 
     const memberDetails = () => {
