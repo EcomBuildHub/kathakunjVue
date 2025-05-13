@@ -1,8 +1,10 @@
 <template>
     <NavBarView></NavBarView>
     <img :src="`http://127.0.0.1:9090/storage/Blog/${blogDetail.coverImage}`" alt="blog cover image" class="blog-cover-image">
-    <h1 class="header">{{ blogDetail.title }}</h1>
-    <p>{{ blogDetail.description }}</p>
+    <h1 class="mt-4 text-4xl font-bold text-center">{{ blogDetail.title }}</h1>
+    <p class="px-8 pt-4">
+      {{ blogDetail.description }}
+    </p>
 </template>
 <style scoped>
 .blog-cover-image {
@@ -29,7 +31,6 @@ const blogDetail = ref({
     status: '',
     createdBy: '',
     updatedBy: '',
-    isPublished: '',
     scheduledAt: '',
     viewsCount: '',
     bookmarkCount: '',
@@ -49,7 +50,6 @@ onMounted(() => {
       blogDetail.value.status = response.data.result.status;
       blogDetail.value.createdBy = response.data.result.updatedBy;
       blogDetail.value.updatedBy = response.data.result.updatedBy;
-      blogDetail.value.isPublished = response.data.result.isPublished;
       blogDetail.value.scheduledAt = response.data.result.scheduledAt;
       blogDetail.value.viewsCount = response.data.result.viewsCount;
       blogDetail.value.bookmarkCount = response.data.result.bookmarkCount;

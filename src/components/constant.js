@@ -20,10 +20,13 @@ export const blogType = [
 
 export const status = [
     {
-        label: 'Active', value: '1',
+        label: 'Published', value: '1',
     },
     {
-        label: 'InActive', value: '0',
+        label: 'Scheduled', value: '0',
+    },
+    {
+        label: 'Draft', value: '2',
     }
 ]
 

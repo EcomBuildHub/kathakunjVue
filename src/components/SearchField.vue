@@ -38,10 +38,10 @@ const props = defineProps({
 });
 
 const searchBlog = {
-  status : "1",
+  status : "2",
   type : "1",
-  startFrom : new Date(),
-  endTo : new Date(),
+  startFrom : '',
+  endTo : '',
 }
 
 const searchBlogs = () => {

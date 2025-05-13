@@ -1,100 +1,96 @@
 <template>
   <NavBarView />
-  <div class="container bg-red-500">
-    <div class="main-content">
-      <div class="input-row">
-        <InputField
-          id="title"
-          placeholder="Title Name"
-          v-model="formData.title"
-          label="Title"
-        />
-        <SelectField
-          id="type"
-          :options="blogType"
-          placeholder="Select type"
-          v-model="formData.type"
-          label="Type"
-        />
-      </div>
-
-      <div class="input-row">
-        <template v-if="formData.type == '0'">
-          <InputField
-            id="subTitle"
-            placeholder="Sub Title"
-            v-model="formData.subTitle"
-            label="Sub Title"
+  <div class="bg-gray-200 px-8 py-3">
+    <div class="grid grid-cols-[70%_30%] gap-4">
+      <div class="grid grid-row">
+        <div class="flex mb-5">
+            <InputField
+            id="title"
+            placeholder="Title Name"
+            v-model="formData.title"
+            label="Title"
+            class="w-full"
           />
-        </template>
-        <template v-if="formData.isPublished == false">
+        </div>
+        <div class="grid grid-cols-3 gap-4 mb-5">
+            <SelectField
+              id="type"
+              :options="blogType"
+              placeholder="Select type"
+              v-model="formData.type"
+              label="Type"
+            />
+            <SelectField
+              id="type"
+              :options="status"
+              placeholder="Select Status"
+              v-model="formData.status"
+              label="Status"
+            />
+            <SelectField
+              id="categories"
+              :options="categories"
+              placeholder="Select Categories"
+              v-model="formData.categories"
+              label="Categories"
+            />
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-5">
+          <template v-if="formData.type == '0' &&  formData.parentId != 0">
+            <InputField
+              id="subTitle"
+              placeholder="Sub Title"
+              v-model="formData.subTitle"
+              label="Sub Title"
+            />
+          </template>
+          <template v-if="formData.status == '0'">
+            <InputField
+              id="scheduleDate"
+              type="date"
+              v-model="formData.scheduleDate"
+              label="Schedule Date"
+            />
+          </template>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-5">
           <InputField
-            id="scheduleDate"
-            type="date"
-            v-model="formData.scheduleDate"
-            label="Schedule Date"
+            id="logo"
+            type="file"
+            @change="handleLogoUpload"
+            label="Logo"
           />
-        </template>
+          <InputField
+            id="coverImage"
+            type="file"
+            @change="handleCoverImage"
+            label="Cover Image"
+          />
+        </div>
+        <div class="flex justify-center items-center space-x-4"  v-if="formData.type == '1'">
+          <textarea
+            name="description"
+            id="description"
+            rows="6"
+            class="description-area"
+            placeholder="Write about your blog..."
+            v-model="formData.description"
+          ></textarea>
+        </div>
+        <div class="flex justify-center gap-4 mt-5">
+          <button type="submit" class="bg-blue-600 px-3 py-3 text-white rounded-lg cursor-pointer" @click="createBlog">
+            Save Blog
+          </button>
+        </div>
       </div>
-
-      <div class="input-row">
-        <InputField
-          id="logo"
-          type="file"
-          @change="handleLogoUpload"
-          label="Logo"
-        />
-        <InputField
-          id="coverImage"
-          type="file"
-          @change="handleCoverImage"
-          label="Cover Image"
-        />
+      <div class="flex justify-center items-center p-4 space-x-4">
+          <div class="w-32 h-32 overflow-hidden rounded-md">
+              <img src="" alt="logo Image" id="logoImageBlog" class="object-fit w-full h-full">
+          </div>
+          <div class="w-32 h-32 overflow-hidden rounded-md">
+              <img src="" alt="logo Image" id="coverImageBlog" class="object-fit w-full h-full">
+          </div>
       </div>
-      <div class="display-image">
-        <img src="" alt="logo Image" id="logoImageBlog">
-        <img src="" alt="logo Image" id="coverImageBlog">
-      </div>
-
-      <div class="textarea-container">
-        <label for="description" class="text-label">Description</label>
-        <textarea
-          name="description"
-          id="description"
-          rows="6"
-          class="description-area"
-          placeholder="Write about your blog..."
-          v-model="formData.description"
-        ></textarea>
-      </div>
-
-      <div class="action-row">
-        <button type="submit" class="submit-btn" @click="createBlog">
-          Save Blog
-        </button>
-      </div>
-    </div>
-
-    <div class="sidebar">
-      <div class="checkbox-group">
-        <label class="custom-checkbox">
-          <input type="checkbox" v-model="formData.isPublished" />
-          <span class="checkmark"></span>
-          Published
-        </label>
-        <label class="custom-checkbox">
-          <input type="checkbox" v-model="formData.status" />
-          <span class="checkmark"></span>
-          Active
-        </label>
-      </div>
-       <SelectField
-          id="categories"
-          :options="categories"
-          placeholder="Select Categories"
-          v-model="formData.categories"
-          label="Categories"
-        />
     </div>
   </div>
 </template>
@@ -254,15 +250,16 @@
 import NavBarView from '@/components/NavBarView.vue';
 import InputField from '@/components/InputField.vue';
 import SelectField from '@/components/SelectField.vue';
-import { blogType } from '@/components/constant';
+import { blogType, status } from '@/components/constant';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { useNotification } from "@kyvg/vue3-notification";
+const notification = useNotification();
 const router = useRouter();
 const formData = ref({
   title: '',
-  isPublished: true,
-  status: true,
+  status: '2',
   type: 1,
   subTitle: '',
   scheduleDate: '',
@@ -270,6 +267,7 @@ const formData = ref({
   categories: [],
   coverImage: '',
   description: '',
+  parentId: 0
 });
 
 
@@ -308,12 +306,11 @@ const createBlog = () => {
     title: formData.value.title,
     subTitle: formData.value.subTitle,
     description: formData.value.description,
-    isPublished: formData.value.isPublished == true ? "1" : "0",
     scheduleDate: formData.value.scheduleDate,
     type:formData.value.type,
     coverImage: formData.value.coverImage,
     logo: formData.value.logo,
-    status: formData.value.status == true ? "1" : "0",
+    status: formData.value.status,
     categories: formData.value.categories
   }
   console.log(data, 'data');
@@ -324,10 +321,20 @@ const createBlog = () => {
   })
   .then(function(response) {
     if(response.status =="200") {
+      notification.notify({
+        type: 'success',
+        title: 'New Blog',
+        text: response.data.message
+      });
       router.push(`/blog-details/${response.data.result.id}`);
     }
     console.log(response.data);
   }).catch(function(error) {
+    notification.notify({
+        type: 'success',
+        title: 'New Blog',
+        text: error.response.data.message
+      });
     console.log(error);
   });
 }
@@ -336,7 +343,7 @@ const categories = ref([]);
 onMounted(() => {
   axios.get('/app/category')
   .then(function(response) {
-    if(response.status == "200") {
+    if(response.status == "200")  {
       categories.value = response.data.result.map(cat => ({
         label : cat.name,
         value: cat.id

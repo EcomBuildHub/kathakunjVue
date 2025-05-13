@@ -2,8 +2,11 @@
     <div class="blog-card"  v-for="blog in options" :key="blog.id">
       <div class="card-content">
         <div class="text-content">
-          <h3 class="title">{{ blog.title }}</h3>
-          <p class="description">{{ trimData(blog.description, 350)}} <RouterLink :to="`/blog-details/${blog.id}`">View More</RouterLink></p>
+          <div class="flex flex-cols justify-between">
+            <h3 class="title">{{ blog.title }}</h3>
+          </div>
+
+          <p class="description">{{ trimData(blog.description, 350)}} <RouterLink :to="`/blog-details/${blog.id}`" class="underline text-blue-600 hover:text-green-500">View More</RouterLink></p>
         </div>
         <div class="avatar-wrapper" v-if="displayImage">
           <img :src="$session.get('avatar')" alt="Avatar" class="avatar"/>
@@ -11,13 +14,13 @@
       </div>
       <div class="blog-info">
         <div class="blog-info-left">
-            <p v-if="displayAuthor"><span class="label">Author:</span> {{ blog.createdBy }}</p>
             <p v-if="blog.publishedAt"><span class="label">Published At:</span> {{ blog.publishedAt }}</p>
-            <p v-if="blog.scheduledAt"><span class="label">Release Date:</span> {{ blog.scheduledAt }}</p>
+            <p v-if="blog.scheduleAt"><span class="label">Release Date:</span> {{ blog.scheduleAt }}</p>
+            <!-- <p v-if="blog.createdAt"><span class="label">Created Date:</span> {{ blog.createdAt }}</p> -->
         </div>
         <div class="blog-info-right">
-            <p><span class="label">Views:</span> {{ blog.totalView }}</p>
-            <p><span class="label">Bookmarks:</span> {{ blog.totalBookMark }}</p>
+            <p><span class="label">Views:</span> {{ blog.viewsCount }}</p>
+            <p><span class="label">Bookmarks:</span> {{ blog.bookmarkCount }}</p>
         </div>
       </div>
     </div>
