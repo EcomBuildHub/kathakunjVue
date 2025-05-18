@@ -21,7 +21,8 @@ import NavBarView from '@/components/NavBarView.vue';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-
+import { useNotification } from "@kyvg/vue3-notification";
+const notification = useNotification()
 const route = useRoute();
 const blogDetail = ref({
     id: '',
@@ -43,20 +44,27 @@ onMounted(() => {
   const blogId = route.params.blogId;
   axios.get(`/blogs/details/${blogId}`)
     .then(function(response) {
-      blogDetail.value.id = response.data.result.id;
-      blogDetail.value.title = response.data.result.title;
-      blogDetail.value.subTitle = response.data.result.subTitle;
-      blogDetail.value.description = response.data.result.description;
-      blogDetail.value.status = response.data.result.status;
-      blogDetail.value.createdBy = response.data.result.updatedBy;
-      blogDetail.value.updatedBy = response.data.result.updatedBy;
-      blogDetail.value.scheduledAt = response.data.result.scheduledAt;
-      blogDetail.value.viewsCount = response.data.result.viewsCount;
-      blogDetail.value.bookmarkCount = response.data.result.bookmarkCount;
-      blogDetail.value.coverImage = response.data.result.coverImage;
-      blogDetail.value.logo = response.data.result.logo;
-      blogDetail.value.type = response.data.result.type;
-      console.log(blogDetail.value, 'value');
+      if(response.status == "200") {
+        notification.notify({
+          type: 'success',
+          title: 'Blog Details',
+          text: 'Details retrieve successfully.'
+        });
+        // axios.get('/')
+        blogDetail.value.id = response.data.result.id;
+        blogDetail.value.title = response.data.result.title;
+        blogDetail.value.subTitle = response.data.result.subTitle;
+        blogDetail.value.description = response.data.result.description;
+        blogDetail.value.status = response.data.result.status;
+        blogDetail.value.createdBy = response.data.result.updatedBy;
+        blogDetail.value.updatedBy = response.data.result.updatedBy;
+        blogDetail.value.scheduledAt = response.data.result.scheduledAt;
+        blogDetail.value.viewsCount = response.data.result.viewsCount;
+        blogDetail.value.bookmarkCount = response.data.result.bookmarkCount;
+        blogDetail.value.coverImage = response.data.result.coverImage;
+        blogDetail.value.logo = response.data.result.logo;
+        blogDetail.value.type = response.data.result.type;
+      }
     })
     .catch(function(error) {
       console.error(error);

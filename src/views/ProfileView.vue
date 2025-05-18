@@ -36,6 +36,7 @@
             <textarea v-model="formData.bio"
                       placeholder="Write your bio here..."
                       required
+                      rows="10"
                       class="w-full p-3 border border-slate-300 rounded-xl bg-slate-50 text-base resize-y min-h-[100px] focus:outline-none focus:border-indigo-600 focus:bg-white transition-all"></textarea>
           </div>
         </div>

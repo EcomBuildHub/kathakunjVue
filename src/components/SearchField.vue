@@ -7,12 +7,6 @@
             <SelectField :id="status" :options="status" v-model="searchBlog.status" placeholder="Select status"></SelectField>
         </span>
         <span>
-            <InputField type="date" name="startFrom" id="startFrom" v-model="searchBlog.startFrom"></InputField>
-        </span>
-        <span>
-            <InputField type="date" name="endTo" id="endTo" v-model="searchBlog.endTo"></InputField>
-        </span>
-        <span>
            <button type="submit" @click="searchBlogs">Filter</button>
         </span>
     </div>
@@ -25,7 +19,6 @@
 }
 </style>
 <script setup>
-import InputField from './InputField.vue';
 import SelectField from './SelectField.vue';
 import { status, blogType } from "./constant";
 import axios from 'axios';
@@ -40,8 +33,6 @@ const props = defineProps({
 const searchBlog = {
   status : "2",
   type : "1",
-  startFrom : '',
-  endTo : '',
 }
 
 const searchBlogs = () => {
@@ -49,8 +40,6 @@ const searchBlogs = () => {
     params: {
       status: searchBlog.status,
       type: searchBlog.type,
-      startFrom: searchBlog.startFrom,
-      endTo: searchBlog.endTo
     }
   })
   .then(function(response) {
